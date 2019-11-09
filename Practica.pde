@@ -40,9 +40,19 @@ void draw(){
   //fondo
   background(#676666); 
   image(img3, 0, 0,1800,800);
+  ellipse(670,380,1300,1300);
+  ellipse(670,380,1150,1150);
+  ellipse(670,380,1000,1000);
+  ellipse(670,380,850,850);  
+  ellipse(670,380,700,700);
+  ellipse(670,380,550,550);
+  ellipse(670,380,400,400);
+  ellipse(670,380,250,250);
+  stroke(#DBD9D9);
+  noFill();
   
   //sol
-  image(sol, 560,250,270,270);
+  image(sol, 570,280,200,200);
   
   //mercurio
   image(mercurio, 450,300, 90,90);
