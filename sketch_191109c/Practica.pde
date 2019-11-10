@@ -14,9 +14,6 @@ PImage img4;
 float posX;
 float posY;
 
-float pox;
-float poy;
-
 
 void setup(){
  tuio =new TuioProcessing(this);
@@ -36,6 +33,7 @@ void setup(){
  //primera nave
  naveuno = loadImage("nave.png");
  
+ 
  fondo=loadImage("fondo.png");
  img4=loadImage("infoSol.png");
 }
@@ -45,7 +43,6 @@ void addTuioObject(TuioObject marcadorTuio){
   image(naveuno,posX,posY,60,60);
   println("entro el token"+marcadorTuio.getSymbolID());
   println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height);
-
 }
 
 void updateTuioObject(TuioObject marcadorTuio){
@@ -57,33 +54,6 @@ void updateTuioObject(TuioObject marcadorTuio){
 }
 
 void draw(){
-  //fondo
-  background(#676666); 
-  image(fondo, 0, 0,1800,800);
-  rect(100,100,100,40);
-  
-  //pinta una nave
-  image(naveuno,posX,posY,60,60); 
-  if(posX>=100 && posX<=200  | posY>=100 && posY<=140){
-    draw2();
-  }
-  
-} 
-  
-void removeTuioObject(TuioObject marcadorTuio){
-  if (marcadorTuio.getSymbolID()==30){
-    print("Salió el token");
-}
-}
-
-void pintaInformacion(float posX, float posY){
-    //Para dibujar tarjetas con información del sol
-  if(posX>=445 && posX<=670  | posY>=305 && posY<=400){
-    image(img4, 730,230,300,100);
-  }
-  print("Salió el token");
-} 
-void ventanaJuego(){
   //fondo
   background(#676666); 
   image(fondo, 0, 0,1800,800);
@@ -117,5 +87,19 @@ void ventanaJuego(){
   
   //pinta una nave
   image(naveuno,posX,posY,60,60);  
+} 
+  
+void removeTuioObject(TuioObject marcadorTuio){
+  if (marcadorTuio.getSymbolID()==30){
+    print("Salió el token");
 }
+}
+
+void pintaInformacion(float posX, float posY){
+    //Para dibujar tarjetas con información del sol
+  if(posX>=445 && posX<=670  | posY>=305 && posY<=400){
+    image(img4, 730,230,300,100);
+  }
+  print("Salió el token");
+} 
   
