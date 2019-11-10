@@ -7,12 +7,14 @@ PImage mercurio;
 PImage venus;
 PImage tierra;
 
-
-
-PImage img3;
+PImage fondo;
 PImage img4;
-float posX=800;
-float posY=400;
+
+//Posicion primera nave
+float posX;
+float posY;
+
+
 void setup(){
  tuio =new TuioProcessing(this);
  fullScreen();
@@ -32,14 +34,31 @@ void setup(){
  naveuno = loadImage("nave.png");
  
  
- img3=loadImage("fondo.png");
- img4=loadImage("uranus.png");
+ fondo=loadImage("fondo.png");
+ img4=loadImage("infoSol.png");
+}
+
+
+void addTuioObject(TuioObject marcadorTuio){
+  image(naveuno,posX,posY,60,60);
+  println("entro el token"+marcadorTuio.getSymbolID());
+  println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height);
+}
+
+void updateTuioObject(TuioObject marcadorTuio){
+  println("entro el token"+marcadorTuio.getSymbolID());
+  posX=round(marcadorTuio.getX()*width);
+  posY=round(marcadorTuio.getY()*height);
+  println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height);
+  image(naveuno,posX,posY,60,60);
 }
 
 void draw(){
   //fondo
   background(#676666); 
-  image(img3, 0, 0,1800,800);
+  image(fondo, 0, 0,1800,800);
+  
+  //aqui se dibujan las órbitas
   ellipse(670,380,1300,1300);
   ellipse(670,380,1150,1150);
   ellipse(670,380,1000,1000);
@@ -52,34 +71,35 @@ void draw(){
   noFill();
   
   //sol
-  image(sol, 570,280,200,200);
+  image(sol, 595,305,150,150);
   
   //mercurio
-  image(mercurio, 450,300, 90,90);
+  image(mercurio, 500,300, 90,90);  
   
   //venus
-  image(venus, 870, 400, 95,95);
+  image(venus, 800, 400, 95,95);
   
   //tierra
-  image(tierra, 550, 100,100,100);
+  image(tierra, 550, 150,100,100);
   
-  //naves
-  image(naveuno,posX,posY,60,60);
+  //Llama a la función pintar cuadro de informacion
+  pintaInformacion(posX, posY);
+  
+  //pinta una nave
+  image(naveuno,posX,posY,60,60);  
 } 
-void addTuioObject(TuioObject marcadorTuio){
-  println("entro el token"+marcadorTuio.getSymbolID());
-  println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height);
-}
-
-void updateTuioObject(TuioObject marcadorTuio){
-  println("entro el token"+marcadorTuio.getSymbolID());
-  posX=round(marcadorTuio.getX()*width);
-  posY=round(marcadorTuio.getY()*height);
-  println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height);
-}  
+  
 void removeTuioObject(TuioObject marcadorTuio){
   if (marcadorTuio.getSymbolID()==30){
     print("Salió el token");
-  }  
-  
 }
+}
+
+void pintaInformacion(float posX, float posY){
+    //Para dibujar tarjetas con información del sol
+  if(posX>=445 && posX<=670  | posY>=305 && posY<=400){
+    image(img4, 730,230,300,100);
+  }
+  print("Salió el token");
+} 
+  
