@@ -11,13 +11,20 @@ PImage jupiter;
 PImage saturno;
 PImage urano;
 PImage neptuno;
-
+PImage mercurioInfo;
+PImage venusInfo;
+PImage tierraInfo;
+PImage marteInfo;
+PImage jupiterInfo;
+PImage saturnoInfo;
+PImage uranoInfo;
+PImage neptunoInfo;
 PImage fondo;
 PImage img4;
 
 //Posicion primera nave
-float posX;
-float posY;
+float posX,posZ;
+float posY,posM;
 
 float pox;
 float poy;
@@ -56,13 +63,30 @@ void setup(){
  //primera nave
  naveuno = loadImage("nave.png");
  
+ //Fondo de la interfaz
  fondo=loadImage("fondo.png");
+ 
+ //Información del sol
  img4=loadImage("infoSol.png");
+ 
+  mercurioInfo=loadImage("mercurioInfo.png");
+  venusInfo=loadImage("venusInfo.png");
+  tierraInfo=loadImage("tierraInfo.png");
+  marteInfo=loadImage("marteInfo.png");
+  jupiterInfo=loadImage("jupiterInfo.png");
+  saturnoInfo=loadImage("saturnoInfo.png");
+  uranoInfo=loadImage("uranoInfo.png");
+ 
+ //Información de Neptuno
+ neptunoInfo=loadImage("neptunoInfo.png");
+ 
+ //
 }
 
 
 void addTuioObject(TuioObject marcadorTuio){
-  image(naveuno,posX,posY,60,60);
+  image(naveuno,posX,posY,90,90);
+  
   println("entro el token"+marcadorTuio.getSymbolID());
   println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height);
 
@@ -73,7 +97,7 @@ void updateTuioObject(TuioObject marcadorTuio){
   posX=round(marcadorTuio.getX()*width);
   posY=round(marcadorTuio.getY()*height);
   println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height);
-  image(naveuno,posX,posY,60,60);
+  image(naveuno,posX,posY,90,90);
 }
 
 void draw(){
@@ -122,9 +146,9 @@ void draw(){
   
   //Llama a la función pintar cuadro de informacion
   pintaInformacion(posX, posY);
-  
+ 
   //pinta una nave
-  image(naveuno,posX,posY,60,60);
+  image(naveuno,posX,posY,90,90);
   
 } 
   
@@ -136,11 +160,19 @@ void removeTuioObject(TuioObject marcadorTuio){
 
 void pintaInformacion(float posX, float posY){
     //Para dibujar tarjetas con información del sol
-  if(posX>=445 && posX<=670  | posY>=305 && posY<=400){
-    image(img4, 730,230,300,100);
-  }
-  print("Salió el token");
+  if(posX>=500 && posY<=300){
+    image(mercurioInfo,250,130,290,600);
+   }else if(posX>=700 && posY<=600){
+    image(jupiterInfo,470,130,290,600);
+  }else if(posX>=120 && posY<=600){
+    image(saturnoInfo,90,130,290,600);
+  }else{
+    print("ingresa bien el token");
+  } 
 } 
+
+
+
 void ventanaJuego(){
   
 }
