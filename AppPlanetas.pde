@@ -23,6 +23,7 @@ PImage neptunoInfo;
 PImage fondo;
 PImage img4;
 int id;
+int id2;
 
 //Posicion primera nave
 float posX,posZ;
@@ -103,28 +104,35 @@ void setup(){
 }
 
 
-void addTuioObject(TuioObject marcadorTuio){
-  posX2=round(marcadorTuio.getX()*width);
-  posY2=round(marcadorTuio.getY()*height);
+void addTuioObject(TuioObject marcadorTuio){  
   id=marcadorTuio.getSymbolID();
-  println("entro el token"+marcadorTuio.getSymbolID());
-  println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height); 
-  image(navedos,posX,posY,90,90); 
-  image(navedos,posX2,posY2,90,90);
+  id2=marcadorTuio.getSymbolID();
+  if(id==2){
+   println("entro el token"+marcadorTuio.getSymbolID());
+   println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height); 
+   image(navedos,posX,posY,90,90); 
+  }
+  if(id2==3){
+   posX2=round(marcadorTuio.getX()*width);
+   posY2=round(marcadorTuio.getY()*height);
+   image(naveuno,posX2,posY2,90,90);
+  }
 }
 
 void updateTuioObject(TuioObject marcadorTuio){
-  println("Entró el token"+marcadorTuio.getSymbolID());
-  posX=round(marcadorTuio.getX()*width);
-  posY=round(marcadorTuio.getY()*height);
-  
+  if(id==2){
+     println("Entró el token"+marcadorTuio.getSymbolID());
+     posX=round(marcadorTuio.getX()*width);
+     posY=round(marcadorTuio.getY()*height);
+     println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height);
+      image(navedos,posX,posY,90,90);
+  }
+  if(id2==3){
   posX2=round(marcadorTuio.getX()*width);
   posY2=round(marcadorTuio.getY()*height);
   println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height);
-  image(navedos,posX,posY,90,90);
-  image(navedos,posX2,posY2,90,90);
-
-
+  image(naveuno,posX2,posY2,90,90);
+  }
 }
 
 void draw(){
@@ -172,12 +180,11 @@ void draw(){
   image(neptuno, 1190, 650, 90,90);
   
   //Llama a la función pintar cuadro de informacion
-  pintaInformacion(posX, posY);
-  
+  if(id==2){
+    pintaInformacion(posX, posY);
+  }
   //Llama a la otra función  
   //Dibuja nave uno
-  image(navedos,posX,posY,90,90);
-  image(navedos,posX2,posY2,90,90);
 
   
   //Dibuja nave dos
@@ -191,7 +198,7 @@ void removeTuioObject(TuioObject marcadorTuio){
 }
 
 void pintaInformacion(float posX, float posY){
-  if(id==15){
+  if(id==2){
   if(posX>=400 && posX<=470 && posY>=300 && posY<=365){
     image(mercurioInfo,1000,0,150,350);
    //Para dibujar las tarjetas de mercurio 
