@@ -22,6 +22,7 @@ PImage uranoInfo;
 PImage neptunoInfo;
 PImage fondo;
 PImage img4;
+int id;
 
 //Posicion primera nave
 float posX,posZ;
@@ -103,22 +104,27 @@ void setup(){
 
 
 void addTuioObject(TuioObject marcadorTuio){
-  image(naveuno,posX,posY,90,90);
+  posX2=round(marcadorTuio.getX()*width);
+  posY2=round(marcadorTuio.getY()*height);
+  id=marcadorTuio.getSymbolID();
   println("entro el token"+marcadorTuio.getSymbolID());
-  println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height);
-  
-  image(navedos, posX2, posY2, 90,90);
+  println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height); 
+  image(navedos,posX,posY,90,90); 
+  image(navedos,posX2,posY2,90,90);
 }
 
 void updateTuioObject(TuioObject marcadorTuio){
   println("Entró el token"+marcadorTuio.getSymbolID());
   posX=round(marcadorTuio.getX()*width);
   posY=round(marcadorTuio.getY()*height);
+  
   posX2=round(marcadorTuio.getX()*width);
   posY2=round(marcadorTuio.getY()*height);
   println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height);
-  image(naveuno,posX,posY,90,90);
-  image(navedos, posX2, posY2,90,90);
+  image(navedos,posX,posY,90,90);
+  image(navedos,posX2,posY2,90,90);
+
+
 }
 
 void draw(){
@@ -168,14 +174,13 @@ void draw(){
   //Llama a la función pintar cuadro de informacion
   pintaInformacion(posX, posY);
   
-  //Llama a la otra función 
-  muestraInformacion(posX2, posY2);
- 
+  //Llama a la otra función  
   //Dibuja nave uno
-  image(naveuno,posX,posY,90,90);
+  image(navedos,posX,posY,90,90);
+  image(navedos,posX2,posY2,90,90);
+
   
   //Dibuja nave dos
-  image(navedos,posX2,posY2, 90, 90);
   
 } 
   
@@ -186,33 +191,46 @@ void removeTuioObject(TuioObject marcadorTuio){
 }
 
 void pintaInformacion(float posX, float posY){
-   //Para dibujar tarjetas con información del sol
-  if(posX>=500 && posY<=300){
-    image(mercurioInfo,250,130,290,600);
-   }else if(posX>=700 && posY<=600){
-    image(jupiterInfo,470,130,290,600);
+  if(id==15){
+  if(posX>=400 && posX<=470 && posY>=300 && posY<=365){
+    image(mercurioInfo,1000,0,150,350);
+   //Para dibujar las tarjetas de mercurio 
+   
+   }else if(posX>=700 && posY<=390){
+     image(venusInfo, 1000,0,150,350);
+     
+   }else if(posX>=500 && posY<=180){
+     image(tierraInfo, 1000,0,150,350);
+     
+   }else if(posX>=750 && posY<=700){
+    image(jupiterInfo,1000,0,150,350);
+    //para dibujar las tarjetas de venus
+    
   }else if(posX>=120 && posY<=600){
-    image(saturnoInfo,90,130,290,600);
+    image(saturnoInfo,90,130,190,400);
+    
   }else{
     print("ingresa bien el token");
   } 
+  }
 }
-
+/*
 void muestraInformacion(float posX2, float posY2){
-  //Para dibujar tarjetas con información del sol
-  if(posX2>=500 && posY2<=300){
-    image(mercurioInfo,250,130,290,600);
-   }else if(posX2>=700 && posY2<=600){
-    image(jupiterInfo,470,130,290,600);
+  if(posX2>=400 && posY2<=342){
+    image(mercurioInfo,0,1160,150,350);
+    
+   }else if(posX2>=750 && posY2<=700){
+    image(jupiterInfo,1160,0,150,350);
+    
   }else if(posX2>=120 && posY2<=600){
-    image(saturnoInfo,90,130,290,600);
+    image(saturnoInfo,90,130,190,400);
   }else{
     print("ingresa bien el token");
   } 
   
   
   
-}
+}*/
 
 void ventanaJuego(){
   
