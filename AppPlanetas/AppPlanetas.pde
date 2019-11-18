@@ -2,6 +2,7 @@ import TUIO.*;
 TuioProcessing tuio;
 
 PImage naveuno;
+PImage navedos;
 PImage sol;
 PImage mercurio;
 PImage venus;
@@ -26,8 +27,9 @@ PImage img4;
 float posX,posZ;
 float posY,posM;
 
-float pox;
-float poy;
+//Posicion segunda nave
+float posX2, posZ2;
+float posY2, posM2;
 
 
 void setup(){
@@ -63,6 +65,9 @@ void setup(){
  
  //Primera nave
  naveuno = loadImage("nave.png");
+ 
+ //Segunda nave
+ navedos = loadImage("cohete.png");
  
  //Fondo de la interfaz
  fondo=loadImage("fondo.png");
@@ -166,11 +171,11 @@ void draw(){
 void removeTuioObject(TuioObject marcadorTuio){
   if (marcadorTuio.getSymbolID()==30){
     print("Salió el token");
-}
+  }
 }
 
 void pintaInformacion(float posX, float posY){
-    //Para dibujar tarjetas con información del sol
+   //Para dibujar tarjetas con información del sol
   if(posX>=500 && posY<=300){
     image(mercurioInfo,250,130,290,600);
    }else if(posX>=700 && posY<=600){
