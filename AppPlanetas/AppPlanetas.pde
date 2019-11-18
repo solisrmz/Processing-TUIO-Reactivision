@@ -1,6 +1,6 @@
 import TUIO.*;
-
 TuioProcessing tuio;
+
 PImage naveuno;
 PImage sol;
 PImage mercurio;
@@ -33,34 +33,35 @@ float poy;
 void setup(){
  tuio =new TuioProcessing(this);
  fullScreen();
- //sol
+ 
+ //Sol
  sol=loadImage("Sun.png");
  
- //mercurio
+ //Mercurio
  mercurio=loadImage("Mercurio.png");
  
  //Venus
  venus=loadImage("venus.png");
  
- //Planeta tierra
+ //Tierra
  tierra = loadImage("tierra.png");
  
- //marte
+ //Marte
  marte= loadImage("mars.png");
  
- //jupiter
+ //Jupiter
  jupiter=loadImage("jupiter.png");
  
- //saturno
+ //Saturno
  saturno=loadImage("saturn.png");
  
- //urano
+ //Urano
  urano=loadImage("uranus.png");
  
- //neptuno
+ //Neptuno
  neptuno=loadImage("neptune.png");
  
- //primera nave
+ //Primera nave
  naveuno = loadImage("nave.png");
  
  //Fondo de la interfaz
@@ -69,31 +70,41 @@ void setup(){
  //Información del sol
  img4=loadImage("infoSol.png");
  
-  mercurioInfo=loadImage("mercurioInfo.png");
-  venusInfo=loadImage("venusInfo.png");
-  tierraInfo=loadImage("tierraInfo.png");
-  marteInfo=loadImage("marteInfo.png");
-  jupiterInfo=loadImage("jupiterInfo.png");
-  saturnoInfo=loadImage("saturnoInfo.png");
-  uranoInfo=loadImage("uranoInfo.png");
+ //Información Mercurio
+ mercurioInfo=loadImage("mercurioInfo.png");
+ 
+ //Información Venus
+ venusInfo=loadImage("venusInfo.png");
+ 
+ //Información Tierra
+ tierraInfo=loadImage("tierraInfo.png");
+ 
+ //Información Marte
+ marteInfo=loadImage("marteInfo.png");
+ 
+ //Información Júpiter
+ jupiterInfo=loadImage("jupiterInfo.png");
+ 
+ //Información Saturno
+ saturnoInfo=loadImage("saturnoInfo.png");
+ 
+ //Información Urano
+ uranoInfo=loadImage("uranoInfo.png");
  
  //Información de Neptuno
  neptunoInfo=loadImage("neptunoInfo.png");
  
- //
 }
 
 
 void addTuioObject(TuioObject marcadorTuio){
   image(naveuno,posX,posY,90,90);
-  
   println("entro el token"+marcadorTuio.getSymbolID());
   println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height);
-
 }
 
 void updateTuioObject(TuioObject marcadorTuio){
-  println("entro el token"+marcadorTuio.getSymbolID());
+  println("Entró el token"+marcadorTuio.getSymbolID());
   posX=round(marcadorTuio.getX()*width);
   posY=round(marcadorTuio.getY()*height);
   println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height);
@@ -101,11 +112,11 @@ void updateTuioObject(TuioObject marcadorTuio){
 }
 
 void draw(){
-    //fondo
+  //Fondo
   background(#676666); 
   image(fondo, 0, 0,1800,800);
   
-  //aqui se dibujan las órbitas
+  //Aquí se dibujan las órbitas
   ellipse(670,380,1300,1300);
   ellipse(670,380,1150,1150);
   ellipse(670,380,1000,1000);
@@ -170,8 +181,6 @@ void pintaInformacion(float posX, float posY){
     print("ingresa bien el token");
   } 
 } 
-
-
 
 void ventanaJuego(){
   
