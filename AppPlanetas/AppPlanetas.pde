@@ -106,14 +106,19 @@ void addTuioObject(TuioObject marcadorTuio){
   image(naveuno,posX,posY,90,90);
   println("entro el token"+marcadorTuio.getSymbolID());
   println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height);
+  
+  image(navedos, posX2, posY2, 90,90);
 }
 
 void updateTuioObject(TuioObject marcadorTuio){
   println("Entró el token"+marcadorTuio.getSymbolID());
   posX=round(marcadorTuio.getX()*width);
   posY=round(marcadorTuio.getY()*height);
+  posX2=round(marcadorTuio.getX()*width);
+  posY2=round(marcadorTuio.getY()*height);
   println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height);
   image(naveuno,posX,posY,90,90);
+  image(navedos, posX2, posY2,90,90);
 }
 
 void draw(){
@@ -162,9 +167,15 @@ void draw(){
   
   //Llama a la función pintar cuadro de informacion
   pintaInformacion(posX, posY);
+  
+  //Llama a la otra función 
+  muestraInformacion(posX2, posY2);
  
-  //pinta una nave
+  //Dibuja nave uno
   image(naveuno,posX,posY,90,90);
+  
+  //Dibuja nave dos
+  image(navedos,posX2,posY2, 90, 90);
   
 } 
   
@@ -185,7 +196,23 @@ void pintaInformacion(float posX, float posY){
   }else{
     print("ingresa bien el token");
   } 
-} 
+}
+
+void muestraInformacion(float posX2, float posY2){
+  //Para dibujar tarjetas con información del sol
+  if(posX2>=500 && posY2<=300){
+    image(mercurioInfo,250,130,290,600);
+   }else if(posX2>=700 && posY2<=600){
+    image(jupiterInfo,470,130,290,600);
+  }else if(posX2>=120 && posY2<=600){
+    image(saturnoInfo,90,130,290,600);
+  }else{
+    print("ingresa bien el token");
+  } 
+  
+  
+  
+}
 
 void ventanaJuego(){
   
