@@ -1,6 +1,4 @@
 import TUIO.*;
-TuioProcessing tuio;
-
 PImage naveuno;
 PImage navedos;
 PImage sol;
@@ -23,22 +21,25 @@ PImage neptunoInfo;
 PImage fondo;
 PImage img4;
 int id;
-int id2;
+float x, y;
+// declare a TuioProcessing client
+TuioProcessing tuioClient;
 
-//Posicion primera nave
-float posX,posZ;
-float posY,posM;
+// these are some helper variables which are used
+// to create scalable graphical feedback
+float cursor_size = 15;
+float object_size = 60;
+float table_size = 760;
+float scale_factor = 1;
+PFont font;
 
-//Posicion segunda nave
-float posX2, posZ2;
-float posY2, posM2;
+boolean verbose = false; // print console debug messages
+boolean callback = true; // updates only after callbacks
+PImage img;
 
-
-void setup(){
- tuio =new TuioProcessing(this);
- fullScreen();
- 
- //Sol
+void setup()
+{
+  //Sol
  sol=loadImage("Sun.png");
  
  //Mercurio
@@ -100,43 +101,24 @@ void setup(){
  
  //Información de Neptuno
  neptunoInfo=loadImage("neptunoInfo.png");
- 
+
+  noCursor();
+  fullScreen();
+  img = loadImage("bolbi.png");
+  
+  // periodic updates
+  if (!callback) {
+    loop();
+    frameRate(60);
+  } else noLoop(); // or callback updates 
+  
+  font = createFont("Arial", 12);
+  scale_factor = height/table_size;
+  tuioClient  = new TuioProcessing(this);
 }
 
-
-void addTuioObject(TuioObject marcadorTuio){  
-  id=marcadorTuio.getSymbolID();
-  id2=marcadorTuio.getSymbolID();
-  if(id==2){
-   println("entro el token"+marcadorTuio.getSymbolID());
-   println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height); 
-   image(navedos,posX,posY,90,90); 
-  }
-  if(id2==3){
-   posX2=round(marcadorTuio.getX()*width);
-   posY2=round(marcadorTuio.getY()*height);
-   image(naveuno,posX2,posY2,90,90);
-  }
-}
-
-void updateTuioObject(TuioObject marcadorTuio){
-  if(id==2){
-     println("Entró el token"+marcadorTuio.getSymbolID());
-     posX=round(marcadorTuio.getX()*width);
-     posY=round(marcadorTuio.getY()*height);
-     println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height);
-      image(navedos,posX,posY,90,90);
-  }
-  if(id2==3){
-  posX2=round(marcadorTuio.getX()*width);
-  posY2=round(marcadorTuio.getY()*height);
-  println("La posición en X es: "+marcadorTuio.getX()*width+" Y: "+marcadorTuio.getY()*height);
-  image(naveuno,posX2,posY2,90,90);
-  }
-}
-
-void draw(){
-  //Fondo
+void draw()
+{
   background(#676666); 
   image(fondo, 0, 0,1800,800);
   
@@ -179,67 +161,140 @@ void draw(){
   //neptuno
   image(neptuno, 1190, 650, 90,90);
   
-  //Llama a la función pintar cuadro de informacion
-  if(id==2){
-    pintaInformacion(posX, posY);
-  }
-  //Llama a la otra función  
-  //Dibuja nave uno
-
-  
-  //Dibuja nave dos
-  
-} 
-  
-void removeTuioObject(TuioObject marcadorTuio){
-  if (marcadorTuio.getSymbolID()==30){
-    print("Salió el token");
-  }
+ 
+  textFont(font,12*scale_factor);
+  float obj_size = object_size*scale_factor; 
+  float cur_size = cursor_size*scale_factor; 
+   
+  ArrayList<TuioObject> tuioObjectList = tuioClient.getTuioObjectList();
+  for (int i=0;i<tuioObjectList.size();i++) {
+     TuioObject tobj = tuioObjectList.get(i);
+     pushMatrix();
+     translate(tobj.getScreenX(width),tobj.getScreenY(height));
+     rotate(tobj.getAngle());
+     image(navedos,-obj_size/2,-obj_size/2,obj_size,obj_size);
+     popMatrix();
+     println();
+   }
+   pintaInformacion(x,y,id);
 }
 
-void pintaInformacion(float posX, float posY){
+void addTuioObject(TuioObject tobj) {
+  if (verbose) println("add obj "+tobj.getSymbolID()+" ("+tobj.getSessionID()+") "+tobj.getX()+" "+tobj.getY()+" "+tobj.getAngle());
+  x=tobj.getX()*width;
+  y=tobj.getY()*height;
+  id=tobj.getSymbolID();
+  println("Entro el objeto: "+id);
+  println(x,y);
+}
+
+void updateTuioObject (TuioObject tobj) {
+  if (verbose) println("set obj "+tobj.getSymbolID()+" ("+tobj.getSessionID()+") "+tobj.getX()+" "+tobj.getY()+" "+tobj.getAngle()
+          +" "+tobj.getMotionSpeed()+" "+tobj.getRotationSpeed()+" "+tobj.getMotionAccel()+" "+tobj.getRotationAccel());
+          x=tobj.getX()*width;
+  y=tobj.getY()*height;
+  id=tobj.getSymbolID();
+  println("Entro el objeto: "+id);
+  println(x,y);
+}
+
+// called when an object is removed from the scene
+void removeTuioObject(TuioObject tobj) {
+  if (verbose) println("del obj "+tobj.getSymbolID()+" ("+tobj.getSessionID()+")");
+}
+
+void addTuioCursor(TuioCursor tcur) {
+  if (verbose) println("add cur "+tcur.getCursorID()+" ("+tcur.getSessionID()+ ") " +tcur.getX()+" "+tcur.getY());
+  //redraw();
+}
+
+void updateTuioCursor (TuioCursor tcur) {
+  if (verbose) println("set cur "+tcur.getCursorID()+" ("+tcur.getSessionID()+ ") " +tcur.getX()+" "+tcur.getY()
+          +" "+tcur.getMotionSpeed()+" "+tcur.getMotionAccel());
+  //redraw();
+}
+
+void removeTuioCursor(TuioCursor tcur) {
+  if (verbose) println("del cur "+tcur.getCursorID()+" ("+tcur.getSessionID()+")");
+  //redraw()
+}
+
+void addTuioBlob(TuioBlob tblb) {
+  if (verbose) println("add blb "+tblb.getBlobID()+" ("+tblb.getSessionID()+") "+tblb.getX()+" "+tblb.getY()+" "+tblb.getAngle()+" "+tblb.getWidth()+" "+tblb.getHeight()+" "+tblb.getArea());
+  //redraw();
+}
+
+void updateTuioBlob (TuioBlob tblb) {
+  if (verbose) println("set blb "+tblb.getBlobID()+" ("+tblb.getSessionID()+") "+tblb.getX()+" "+tblb.getY()+" "+tblb.getAngle()+" "+tblb.getWidth()+" "+tblb.getHeight()+" "+tblb.getArea()
+          +" "+tblb.getMotionSpeed()+" "+tblb.getRotationSpeed()+" "+tblb.getMotionAccel()+" "+tblb.getRotationAccel());
+  //redraw()
+}
+
+void removeTuioBlob(TuioBlob tblb) {
+  if (verbose) println("del blb "+tblb.getBlobID()+" ("+tblb.getSessionID()+")");
+  //redraw()
+}
+
+void refresh(TuioTime frameTime) {
+  if (verbose) println("frame #"+frameTime.getFrameID()+" ("+frameTime.getTotalMilliseconds()+")");
+  if (callback) redraw();
+}
+
+void pintaInformacion(float posX, float posY,int id){
   if(id==2){
-  if(posX>=400 && posX<=470 && posY>=300 && posY<=365){
+    
+  if(posX>=520 && posX<=600 && posY>=300 && posY<=365){
     image(mercurioInfo,1000,0,150,350);
-   //Para dibujar las tarjetas de mercurio 
    
-   }else if(posX>=700 && posY<=390){
+   }else if(posX>=750 && posX<=880 && posY>=400 && posY<=460){
      image(venusInfo, 1000,0,150,350);
      
    }else if(posX>=500 && posY<=180){
      image(tierraInfo, 1000,0,150,350);
      
-   }else if(posX>=750 && posY<=700){
+   }else if(posX>=880 && posX<=962 && posY>=250 &&posY<=300){
+     image(marteInfo, 1000,0,150,350);
+     
+   }else if(posX>=810 &&posX<=890 && posY>=600 &&posY<=710){
     image(jupiterInfo,1000,0,150,350);
-    //para dibujar las tarjetas de venus
     
-  }else if(posX>=120 && posY<=600){
-    image(saturnoInfo,90,130,190,400);
+  }else if(posX>=120 &&posX<=300 && posY>=120 && posY<=320){
+    image(saturnoInfo,1000,0,190,400); 
     
-  }else{
-    print("ingresa bien el token");
-  } 
-  }
-}
-/*
-void muestraInformacion(float posX2, float posY2){
-  if(posX2>=400 && posY2<=342){
-    image(mercurioInfo,0,1160,150,350);
+  }else if(posX>=90 &&posX<=200 && posY>=500 && posY<=580){
+    image(uranoInfo, 1000, 0, 150,350); 
     
-   }else if(posX2>=750 && posY2<=700){
+  }else if(posX>=1100 &&posX<=1250 && posY>=648 && posY<=700){
+    image(neptunoInfo, 1100,0,150,350);
+  }  
+  
+  
+  //PARA EL FIDUCIAL 3
+  
+  }else if(id==3){
+  if(posX>=520 && posX<=600 && posY>=300 && posY<=365){
+    image(mercurioInfo,1160,0,150,350);
+   
+   }else if(posX>=750 && posX<=880 && posY>=400 && posY<=460){
+     image(venusInfo, 1160,0,150,350);
+     
+   }else if(posX>=500 && posY<=180){
+     image(tierraInfo, 1160,0,150,350);
+     
+   }else if(posX>=880 && posX<=962 && posY>=250 &&posY<=300){
+     image(marteInfo, 1160,0,150,350);
+     
+   }else if(posX>=810 &&posX<=890 && posY>=600 &&posY<=710){
     image(jupiterInfo,1160,0,150,350);
     
-  }else if(posX2>=120 && posY2<=600){
-    image(saturnoInfo,90,130,190,400);
-  }else{
-    print("ingresa bien el token");
-  } 
-  
-  
-  
-}*/
-
-void ventanaJuego(){
-  
+  }else if(posX>=120 &&posX<=300 && posY>=120 && posY<=320){
+    image(saturnoInfo,1160,0,190,400); 
+    
+  }else if(posX>=90 &&posX<=200 && posY>=500 && posY<=580){
+    image(uranoInfo, 1160, 0, 150,350); 
+    
+  }else if(posX>=1100 &&posX<=1250 && posY>=648 && posY<=700){
+    image(neptunoInfo, 1160,0,150,350);
+  }
+  }
 }
-  
