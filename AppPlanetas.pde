@@ -174,7 +174,6 @@ void draw()
      rotate(tobj.getAngle());
      image(navedos,-obj_size/2,-obj_size/2,obj_size,obj_size);
      popMatrix();
-     println();
    }
    pintaInformacion(x,y,id);
 }
