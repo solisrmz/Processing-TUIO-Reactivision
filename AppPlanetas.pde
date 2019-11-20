@@ -147,6 +147,7 @@ void draw()
   //aqui el de ordenar planetas
   if(escena==2){
     ordenarPlanetas();
+    println("Hola");
   }
   //menu principal
   if(escena==3){
