@@ -104,7 +104,6 @@ void setup()
 
   noCursor();
   fullScreen();
-  img = loadImage("bolbi.png");
   
   // periodic updates
   if (!callback) {
@@ -175,7 +174,17 @@ void draw()
      image(navedos,-obj_size/2,-obj_size/2,obj_size,obj_size);
      popMatrix();
    }
-   pintaInformacion(x,y,id);
+   
+   if(id==2){
+     pintaInformacion(x,y,id);
+   }
+   
+   if(id==3){
+     pintaInformacion(x,y,id);
+   }
+   if(id==2 &&id==3){
+     pintaInformacion(x,y,id);
+   }
 }
 
 void addTuioObject(TuioObject tobj) {
@@ -295,5 +304,33 @@ void pintaInformacion(float posX, float posY,int id){
   }else if(posX>=1100 &&posX<=1250 && posY>=648 && posY<=700){
     image(neptunoInfo, 1160,0,150,350);
   }
+  }else if(id==2 && id==3){
+  if(posX>=520 && posX<=600 && posY>=300 && posY<=365){
+    image(mercurioInfo,1160,0,150,350);
+   
+   }else if(posX>=750 && posX<=880 && posY>=400 && posY<=460){
+     image(venusInfo, 1160,0,150,350);
+     
+   }else if(posX>=500 && posY<=180){
+     image(tierraInfo, 1160,0,150,350);
+     
+   }else if(posX>=880 && posX<=962 && posY>=250 &&posY<=300){
+     image(marteInfo, 1160,0,150,350);
+     
+   }else if(posX>=810 &&posX<=890 && posY>=600 &&posY<=710){
+    image(jupiterInfo,1160,0,150,350);
+    
+  }else if(posX>=120 &&posX<=300 && posY>=120 && posY<=320){
+    image(saturnoInfo,1160,0,190,400); 
+    
+  }else if(posX>=90 &&posX<=200 && posY>=500 && posY<=580){
+    image(uranoInfo, 1160, 0, 150,350); 
+    
+  }else if(posX>=1100 &&posX<=1250 && posY>=648 && posY<=700){
+    image(neptunoInfo, 1160,0,150,350);
   }
+  }
+  
+  
+  
 }
